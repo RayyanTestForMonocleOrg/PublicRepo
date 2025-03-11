@@ -11,9 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-      with:
-        token: ${{ github.token }}
-        repository: RayyanTestForMonocleOrg/SimplePythonScripts
+     - name: Get Token
+       id: get_workflow_token
+       uses: peter-murray/workflow-application-token-action@v4
+       with:
+         application_id: ${{ vars.GH_APPLICATION_ID }}
+         application_private_key: ${{ secrets.GH_APPLICATION_KEY }}
+
+     
+     - uses: actions/checkout@v3
+       with:
+         token: ${{ steps.get_workflow_token.outputs.token }}
+         repository: RayyanTestForMonocleOrg/SimplePythonScripts
 
     

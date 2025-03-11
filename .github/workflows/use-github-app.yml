@@ -18,10 +18,18 @@ jobs:
          application_id: ${{ vars.GH_APPLICATION_ID }}
          application_private_key: ${{ secrets.GH_APPLICATION_KEY }}
 
-     
-     - uses: actions/checkout@v3
+     - name: Checkout repository
+       uses: actions/checkout@v3
        with:
          token: ${{ steps.get_workflow_token.outputs.token }}
          repository: RayyanTestForMonocleOrg/SimplePythonScripts
 
-    
+     - name: List files in the repository
+       run: |
+         echo "Listing files in the repository:"
+         ls -R
+
+     - name: Run a simple Python script
+       run: |
+         echo "Running a simple Python script..."
+         python3 SimplePythonScripts/main.py

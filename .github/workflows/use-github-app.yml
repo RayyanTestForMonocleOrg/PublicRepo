@@ -1,0 +1,35 @@
+name: Use GitHub App
+on:
+  workflow_dispatch:
+
+  push:
+    paths:
+    - .github/workflows/use-github-app.yml
+
+jobs:
+  checkout-other-repo:
+    runs-on: ubuntu-latest
+
+    steps:
+     - name: Get Token
+       id: get_workflow_token
+       uses: peter-murray/workflow-application-token-action@v4
+       with:
+         application_id: ${{ vars.GH_APPLICATION_ID }}
+         application_private_key: ${{ secrets.GH_APPLICATION_KEY }}
+
+     - name: Checkout repository
+       uses: actions/checkout@v3
+       with:
+         token: ${{ steps.get_workflow_token.outputs.token }}
+         repository: RayyanTestForMonocleOrg/SimplePythonScripts
+
+     - name: List files in the repository
+       run: |
+         echo "Listing files in the repository:"
+         ls -R
+
+     - name: Run the Python script from the root directory
+       run: |
+         echo "Running a simple Python script..."
+         python3 main.py  # Updated path to match the location of the script
